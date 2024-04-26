@@ -26,7 +26,22 @@ dependencies = [
   "gpytorch~=1.11",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.2",
+]
+
 [project.urls]
 Documentation = "https://github.com/magkri/gpytorch-mogp#readme"
 Issues = "https://github.com/magkri/gpytorch-mogp/issues"
 Source = "https://github.com/magkri/gpytorch-mogp"
+
+[tool.ruff]
+line-length = 120
+extend-include = ["*.ipynb"]  # include Jupyter notebooks in linting and formatting
+
+[tool.ruff.lint]
+select = ["ALL"]  # start by linting everything, then add ignores as needed
+
+[tool.ruff.lint.flake8-annotations]
+mypy-init-return = true  # allow omitting return type annotations for `__init__` methods
