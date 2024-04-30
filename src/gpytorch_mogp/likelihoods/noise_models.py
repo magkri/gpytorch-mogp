@@ -57,10 +57,7 @@ class FixedMultiOutputGaussianNoise(Noise):
         """
 
         if shape is None:
-            warnings.warn(
-                f"I have not accounted for `shape is None`. Behavior may be unexpected."
-                f"shape: {shape}"
-            )
+            warnings.warn(f"I have not accounted for `shape is None`. Behavior may be unexpected." f"shape: {shape}")
             p = params[0] if torch.is_tensor(params[0]) else params[0][0]
             shape = p.shape if len(p.shape) == 1 else p.shape[:-1]
 
@@ -75,14 +72,10 @@ class FixedMultiOutputGaussianNoise(Noise):
             else:
                 return BlockInterleavedLinearOperator(self.noise, block_dim=-3)
         else:
-            warnings.warn(
-                "I have not accounted for this case. Behavior may be unexpected."
-            )
+            warnings.warn("I have not accounted for this case. Behavior may be unexpected.")
             return ZeroLinearOperator()
 
     def _apply(self, fn):
-        warnings.warn(
-            "I have not accounted for use of _apply. Behavior may be unexpected."
-        )
+        warnings.warn("I have not accounted for use of _apply. Behavior may be unexpected.")
         self.noise = fn(self.noise)
         return super()._apply(fn)

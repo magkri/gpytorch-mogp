@@ -34,7 +34,6 @@ class FixedNoiseMultiOutputGaussianLikelihood(_MultitaskGaussianLikelihoodBase):
         *params: Any,
         **kwargs: Any,
     ) -> LinearOperator:
-
         res = self.noise_covar(*params, shape=base_shape, **kwargs)
 
         if isinstance(res, ZeroLinearOperator):
@@ -60,7 +59,9 @@ class FixedNoiseMultiOutputGaussianLikelihood(_MultitaskGaussianLikelihoodBase):
 
         noise_covar = self._shaped_noise_covar(
             # TODO: should params be left out here? It contains values sometimes, they might be handled incorrectly
-            mean.shape, *params, **kwargs
+            mean.shape,
+            *params,
+            **kwargs,
         )
         covar = covar + noise_covar
 
@@ -72,7 +73,9 @@ class FixedNoiseMultiOutputGaussianLikelihood(_MultitaskGaussianLikelihoodBase):
 
     def expected_log_prob(self, *args, **kwargs):
         # this is for safety, as the inherited method calls .diagonal() on the output of _shaped_noise_covar()
-        raise NotImplementedError("Expected log probability method not implemented for FixedNoiseMultiOutputGaussianLikelihood")
+        raise NotImplementedError(
+            "Expected log probability method not implemented for FixedNoiseMultiOutputGaussianLikelihood"
+        )
 
     @property
     def has_global_noise(self) -> bool:

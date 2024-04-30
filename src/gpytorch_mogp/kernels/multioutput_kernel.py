@@ -38,18 +38,10 @@ class MultiOutputKernel(Kernel):
         super().__init__(**kwargs)
 
         if len(covar_modules) == 1 and num_outputs is None:
-            raise RuntimeError(
-                "`num_outputs` must be specified if a single kernel is provided"
-            )
+            raise RuntimeError("`num_outputs` must be specified if a single kernel is provided")
 
-        if (
-            len(covar_modules) > 1
-            and num_outputs is not None
-            and len(covar_modules) != num_outputs
-        ):
-            raise RuntimeError(
-                "`num_outputs` must match the number of kernels provided"
-            )
+        if len(covar_modules) > 1 and num_outputs is not None and len(covar_modules) != num_outputs:
+            raise RuntimeError("`num_outputs` must match the number of kernels provided")
 
         # if not isinstance(covar_modules, list) or (len(covar_modules) != 1 and len(covar_modules) != num_outputs):
         #     raise RuntimeError("`covar_modules` should be a list of kernels of length either 1 or num_outputs")
@@ -59,31 +51,22 @@ class MultiOutputKernel(Kernel):
             # TODO: don't make a copy of the first kernel, just use it as is
             # covar_modules = [deepcopy(covar_modules[0]) for _ in range(num_outputs)] if make_copies else covar_modules
             covar_modules = (
-                [
-                    deepcopy(covar_modules[0]) if i > 0 else covar_modules[0]
-                    for i in range(num_outputs)
-                ]
+                [deepcopy(covar_modules[0]) if i > 0 else covar_modules[0] for i in range(num_outputs)]
                 if make_copies
                 else covar_modules
             )
             # covar_modules = covar_modules + [deepcopy(covar_modules[0]) for i in range(num_outputs - 1)] if make_copies else covar_modules
 
         self.covar_modules = ModuleList(covar_modules)
-        self.num_outputs = (
-            num_outputs if num_outputs is not None else len(covar_modules)
-        )
+        self.num_outputs = num_outputs if num_outputs is not None else len(covar_modules)
         self.interleaved = interleaved
 
     def forward(self, x1, x2, diag=False, last_dim_is_batch=False, **params):
         if last_dim_is_batch:
-            raise RuntimeError(
-                "MultiOutputKernel does not accept the last_dim_is_batch argument."
-            )
+            raise RuntimeError("MultiOutputKernel does not accept the last_dim_is_batch argument.")
 
         # Forward all the covar_modules
-        output_covars = [
-            module.forward(x1, x2, **params) for module in self.covar_modules
-        ]
+        output_covars = [module.forward(x1, x2, **params) for module in self.covar_modules]
 
         if len(self.covar_modules) == 1 and self.num_outputs > 1:
             # Sharing the same kernel across all outputs, so we need to expand the output
