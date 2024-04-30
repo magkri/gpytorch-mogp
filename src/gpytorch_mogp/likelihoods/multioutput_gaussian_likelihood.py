@@ -13,7 +13,7 @@ from linear_operator.operators import (
 from torch import Tensor
 from torch.distributions import Normal
 
-from .multioutput_noise_models import FixedMultiOutputGaussianNoise
+from .noise_models import FixedMultiOutputGaussianNoise
 
 
 class FixedNoiseMultiOutputGaussianLikelihood(_MultitaskGaussianLikelihoodBase):
