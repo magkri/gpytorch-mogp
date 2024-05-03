@@ -40,6 +40,12 @@ Then install the package with the `examples` dependencies:
 pip install .[examples]
 ```
 
+To run the [comparison notebook](examples/comparison_with_rapid_models.ipynb), you also need to install
+[`rapid-models`](https://github.com/RaPiD-models/rapid_models_dev2023) from source.
+
+> **Note:** The version of `rapid-modles` linked to above is private at the time of writing, so you may not be able to
+> install it.
+
 ## Usage
 
 The package provides a custom `MultiOutputKernel` module that wraps one or more base kernels, producing a
