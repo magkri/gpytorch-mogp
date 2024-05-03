@@ -83,6 +83,12 @@ test_noise = ...  # (m, num_outputs, num_outputs)
 f_preds = model(test_x)
 y_preds = likelihood(model(test_x), noise=test_noise)
 ```
+> **Note:** `MultiOutputKernel` currently uses `num_outputs`, while `MultitaskMean` and
+> `FixedNoiseMultiOutputGaussianLikelihood` use `num_tasks`. In this example, they mean the same thing. However, 
+> multi-output and multi-task can have different meanings in other contexts. The reason for this inconsistency is that
+> the `num_tasks` argument comes from `gpytorch`, while the `num_outputs` argument comes from `gpytorch-mogp`
+> (`FixedNoiseMultiOutputGaussianLikelihood` inherits it from `gpytorch`). This inconsistency may be addressed in future
+> versions of the package.
 
 > **Note:** The `MultiOutputKernel` produces an [_interleaved_ block diagonal covariance matrix](#glossary) by default,
 > as that is the convention used in `gpytorch`. If you want to produce a [_non-interleaved_ block diagonal covariance
