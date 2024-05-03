@@ -10,23 +10,56 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 authors = [
-  { name = "Magnus Kristiansen", email = "magnus.kristiansen@dnv.com" },
+    { name = "Magnus Kristiansen", email = "magnus.kristiansen@dnv.com" },
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-  "gpytorch~=1.11",
+    "gpytorch~=1.11",
+    "einops>=0.8.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.2",
+]
+examples = [
+    "jupyter>=1.0.0",
+    "matplotlib>=3.8.4",
+]
+all = ["gpytorch-mogp[dev, examples]"]
 
 [project.urls]
 Documentation = "https://github.com/magkri/gpytorch-mogp#readme"
 Issues = "https://github.com/magkri/gpytorch-mogp/issues"
 Source = "https://github.com/magkri/gpytorch-mogp"
+
+[tool.ruff]
+src = ["src"]  # When resolving imports, packages in `src` are considered first-party imports (project root is default)
+line-length = 120
+extend-include = ["*.ipynb"]  # Include Jupyter notebooks in linting and formatting
+
+[tool.ruff.lint]
+select = ["ALL"]  # Start by linting everything, then add ignores as needed
+ignore = [
+    "ANN002",  # Missing type annotation for `*args`
+    "ANN003",  # Missing type annotation for `**kwargs`
+    "ANN101",  # Missing type annotation for `self` in method
+    "ANN102",  # Missing type annotation for `cls` in classmethod
+    "COM812",  # Trailing comma missing (conflicts with the formatter)
+    "ISC001",  # Implicitly concatenated string literals on one line (conflicts with the formatter)
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-annotations]
+mypy-init-return = true  # Allow omitting return type annotations for `__init__` methods

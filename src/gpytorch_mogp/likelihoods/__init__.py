@@ -1,0 +1,3 @@
+from .multioutput_gaussian_likelihood import FixedNoiseMultiOutputGaussianLikelihood
+
+__all__ = ["FixedNoiseMultiOutputGaussianLikelihood"]
