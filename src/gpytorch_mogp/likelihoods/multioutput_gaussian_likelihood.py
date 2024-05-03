@@ -1,5 +1,7 @@
+"""This module implements a likelihood for multi-output Gaussian processes with fixed noise."""
+
 import warnings
-from typing import Any, Optional
+from typing import Any
 
 import torch
 from gpytorch.distributions import MultitaskMultivariateNormal
@@ -11,7 +13,6 @@ from linear_operator.operators import (
     ZeroLinearOperator,
 )
 from torch import Tensor
-from torch.distributions import Normal
 
 from .noise_models import FixedMultiOutputGaussianNoise
 
@@ -23,7 +24,7 @@ class FixedNoiseMultiOutputGaussianLikelihood(_MultitaskGaussianLikelihoodBase):
         interleaved: bool = True,
         *args: Any,
         **kwargs: Any,
-    ) -> None:
+    ):
         super().__init__(
             noise_covar=FixedMultiOutputGaussianNoise(noise=noise, interleaved=interleaved), *args, **kwargs
         )

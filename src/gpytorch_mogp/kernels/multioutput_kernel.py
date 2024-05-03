@@ -1,4 +1,7 @@
+"""This module implements a kernel for multi-output Gaussian processes."""
+
 from copy import deepcopy
+from typing import Optional
 
 from gpytorch.kernels import Kernel
 from linear_operator import to_linear_operator
@@ -14,7 +17,7 @@ class MultiOutputKernel(Kernel):
     def __init__(
         self,
         *covar_modules: Kernel,
-        num_outputs: int | None = None,
+        num_outputs: Optional[int] = None,
         make_copies: bool = True,
         interleaved: bool = True,
         **kwargs,
@@ -22,10 +25,9 @@ class MultiOutputKernel(Kernel):
         """Initialize a multi-output kernel.
 
         Args:
-        ----
-            *covar_modules: Variable number of covariance kernels. If a single kernel is provided, it is either replicated
-                across outputs (if make_copies=True) or shared among all (if make_copies=False). If multiple kernels are given,
-                each kernel corresponds to one output dimension.
+            *covar_modules: Variable number of covariance kernels. If a single kernel is provided, it is either
+                replicated across outputs (if make_copies=True) or shared among all (if make_copies=False). If multiple
+                kernels are given, each kernel corresponds to one output dimension.
             num_outputs: Optional; The number of output dimensions. Required if a single kernel is provided. If provided
                 with multiple kernels, it must match the number of kernels.
             make_copies: Determines whether to replicate the kernel for each output dimension (True) or
@@ -33,15 +35,16 @@ class MultiOutputKernel(Kernel):
             interleaved: If True, the covariance matrix is block-diagonal w.r.t. inter-output covariances for each
                 observation. If False, it is block-diagonal w.r.t. inter-observation covariance for each output.
             **kwargs: Additional keyword arguments for the Kernel base class.
-
         """
         super().__init__(**kwargs)
 
         if len(covar_modules) == 1 and num_outputs is None:
-            raise RuntimeError("`num_outputs` must be specified if a single kernel is provided")
+            msg = "`num_outputs` must be specified if a single kernel is provided"
+            raise RuntimeError(msg)
 
         if len(covar_modules) > 1 and num_outputs is not None and len(covar_modules) != num_outputs:
-            raise RuntimeError("`num_outputs` must match the number of kernels provided")
+            msg = "`num_outputs` must match the number of kernels provided"
+            raise RuntimeError(msg)
 
         # if not isinstance(covar_modules, list) or (len(covar_modules) != 1 and len(covar_modules) != num_outputs):
         #     raise RuntimeError("`covar_modules` should be a list of kernels of length either 1 or num_outputs")
@@ -82,8 +85,9 @@ class MultiOutputKernel(Kernel):
         # Make sure we have a LinearOperator
         output_covars = to_linear_operator(output_covars)
 
-        # temp: must convert to dense linear operator here (or Tensor) as indexing a (lazy) block linear operator seems
-        #   to be bugged atm. (I (magnus.kristiansen@dnv.com) have documented this as an issue, somewhere...).
+        # TODO: must convert to dense linear operator here (or Tensor) as indexing a (lazy) block linear operator seems
+        #  to be bugged atm. (I (magnus.kristiansen@dnv.com) have documented this as an issue, somewhere...). This is
+        #  a temporary fix, it degrades performance, but it works.
         if self.interleaved:
             res = to_linear_operator(BlockInterleavedLinearOperator(output_covars, block_dim=-3).to_dense())
         else:
