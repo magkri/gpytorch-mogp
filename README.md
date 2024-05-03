@@ -1,7 +1,7 @@
 # gpytorch-mogp
 
-[![PyPI - Version](https://img.shields.io/pypi/v/gpytorch-mogp-new.svg)](https://pypi.org/project/gpytorch-mogp-new)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/gpytorch-mogp-new.svg)](https://pypi.org/project/gpytorch-mogp-new)
+[![PyPI - Version](https://img.shields.io/pypi/v/gpytorch-mogp.svg)](https://pypi.org/project/gpytorch-mogp)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/gpytorch-mogp.svg)](https://pypi.org/project/gpytorch-mogp)
 
 `gpytorch-mogp` is a Python package that extends [GPyTorch](https://gpytorch.ai/) to support Multiple-Output Gaussian
 processes where the correlation between the outputs is known.
