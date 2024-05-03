@@ -6,6 +6,9 @@
 `gpytorch-mogp` is a Python package that extends [GPyTorch](https://gpytorch.ai/) to support Multiple-Output Gaussian
 processes where the correlation between the outputs is known.
 
+> **Note:** The package is currently in an early stage of development. Expect bugs and breaking changes in future
+> versions. Please create an issue if you encounter any problems or have any suggestions.
+
 -----
 
 **Table of Contents**
