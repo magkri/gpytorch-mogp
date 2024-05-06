@@ -122,6 +122,13 @@ package and the `rapid-models` package (demonstrating that the two packages prod
 ## Known Issues
 - Constructing a GP with `interleaved=False` in `MultiOutputKernel`, `MultitaskMultivariateNormal`, and
     `FixedNoiseMultiOutputGaussianLikelihood` does not work as expected. Avoid using `interleaved=False` for now.
+- The output of `MultiOutputKernel` is dense at the moment, as indexing into a block [linear operator]
+    (https://github.com/cornellius-gp/linear_operator) is not working as expected.
+- Important docstrings are missing.
+- The code style is not consistent with the `gpytorch` code style (note that `gpytorch` itself does not have a good and
+    consistent code style).
+- There are currently no tests for the package, except for some doctests in the docstrings. The primary goal is to
+    replicate the behavior of `rapid-models`, which is currently checked by comparing the results from _one_ example.
 - Most issues are probably unknown at this point. Please create an issue if you encounter any problems ...
 
 ## Glossary
